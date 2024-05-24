@@ -1,0 +1,30 @@
+﻿<Window x:Class="UploadSchedule.MainWindow"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:UploadSchedule"
+        mc:Ignorable="d"
+        Title="Выгрузка расписания" Height="300" Width="450"
+        WindowStartupLocation="CenterScreen" MinWidth="450"  >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="183*"/>
+        </Grid.ColumnDefinitions>
+
+                <Grid x:Name="Grid1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"> </RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="FileName"  Grid.Row="1" Height="20" Width="270" Text="Текущий загружаемый файл" VerticalAlignment="Bottom" Margin="40 0 0 5" FontSize="14"/>
+                    <TextBlock x:Name="LatestTime" Grid.Row="2" Height="20" Width="190" Text="Прошло времени:" VerticalAlignment="Top" Margin="-40 0 0 0" FontSize="14"/>
+            <Button x:Name="UploadButton"  Grid.Row="3" Height="35" Width="225" Content="Начать выгрузку" Margin="0 0 0 0" Click="UploadButton_Click" FontSize="14"/>
+        </Grid>
+    </Grid>
+</Window>
