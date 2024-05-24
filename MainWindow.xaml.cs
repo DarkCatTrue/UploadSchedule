@@ -31,6 +31,20 @@ namespace UploadSchedule
                 File.Create($"{ProgramPath}\\FTP.txt");
             }
         }
+        private void OnTabItemChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader($"{ProgramPath}\\FTP.txt"))
+                {
+                    ScheduleBox.Text = sr.ReadLine();
+                    IPBox.Text = sr.ReadLine();
+                    LoginBox.Text = sr.ReadLine();
+                    PasswordBox.Password = sr.ReadLine();
+                }
+            }
+            catch { }
+        }
         private void UploadButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -41,6 +55,24 @@ namespace UploadSchedule
                 UploadButton.IsEnabled = false;
             }
             catch { System.Windows.MessageBox.Show("Выгрузка уже началась! Для прекращения выгрузки закройте программу."); }
+        }
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter($"{ProgramPath}\\FTP.txt"))
+                {
+                    string Schedule = ScheduleBox.Text;
+                    Schedule = Schedule.Replace(@"""", "");
+                    ScheduleBox.Text = Schedule;
+                    sw.WriteLine(Schedule);
+                    sw.WriteLine(IPBox.Text);
+                    sw.WriteLine(LoginBox.Text);
+                    sw.WriteLine(PasswordBox.Password);
+                    System.Windows.MessageBox.Show("Конфигурация успешно сохранена!");
+                }
+            }
+            catch { System.Windows.MessageBox.Show("Ошибка сохранения! Для сохранения конфигурации необходимо дождаться окончания выгрузки."); }
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -61,11 +93,7 @@ namespace UploadSchedule
                             {
                                 ftp.AutoConnect();
                             }
-                            catch
-                            {
-                                timer.Stop();
-                                System.Windows.MessageBox.Show("Повторите попытку позже!");
-                            }
+                            catch { System.Windows.MessageBox.Show("Повторите попытку позже!"); }
                         }
 
                         foreach (string file in filePaths)
@@ -79,11 +107,7 @@ namespace UploadSchedule
                         ftp.Disconnect();
                     }
                 }
-                catch
-                {
-                    timer.Stop();
-                    System.Windows.MessageBox.Show("Ошибка подключения! Удостоверьтесь в правильности исходных данных!");
-                }
+                catch { System.Windows.MessageBox.Show("Ошибка подключения! Удостоверьтесь в правильности исходных данных!"); }
             }
         }
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -104,4 +128,5 @@ namespace UploadSchedule
             LatestTime.Text = "Прошло времени: " + (DateTime.Now - date).ToString(@"mm\:ss");
         }
     }
+
 }
